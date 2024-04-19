@@ -1,0 +1,9 @@
+# Copyright 2020-2022 NXP
+# SPDX-License-Identifier: Apache-2.0
+
+config SOC_SERIES_DR1M90
+	bool "Anlogic Dr1m90 A35 Core Series"
+	select ARM64
+	select SOC_FAMILY_ANLOGIC
+	help
+	  Enable support for anlogic dr1m90 A53 Series.

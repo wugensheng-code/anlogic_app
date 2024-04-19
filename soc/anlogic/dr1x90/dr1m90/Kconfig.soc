@@ -1,0 +1,19 @@
+#
+# Copyright 2022 Huawei France Technologies SASU
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+config SOC_DR1M90
+	bool
+	select SOC_SERIES_DR1M90
+
+config SOC_SERIES_DR1M90
+	bool
+	select SOC_FAMILY_ANLOGIC_DR1X90
+
+config SOC
+	default "dr1m90" if SOC_DR1M90
+
+config SOC_SERIES
+	default "dr1m90" if SOC_SERIES_DR1M90

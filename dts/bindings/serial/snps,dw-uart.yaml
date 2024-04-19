@@ -1,0 +1,83 @@
+# Copyright (c) 2021 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  An example sensor that reads the GPIO level defined in input-gpios. The
+  purpose of this sensor is to demonstrate how to create out-of-tree drivers.
+
+  Example definition in devicetree:
+
+    serial@80230000 {
+      compatible = "snps,dw-apb-uart";
+      reg = <0x80230000 0x100>;
+      clock-frequency = <3686400>;
+      interrupts = <10>;
+      reg-shift = <2>;
+      reg-io-width = <4>;
+      dcd-override;
+      dsr-override;
+      cts-override;
+      ri-override;
+    };
+
+    // Example with one clock:
+    serial@80230000 {
+      compatible = "snps,dw-apb-uart";
+      reg = <0x80230000 0x100>;
+      clocks = <&baudclk>;
+      interrupts = <10>;
+      reg-shift = <2>;
+      reg-io-width = <4>;
+    };
+
+    // Example with two clocks:
+    serial@80230000 {
+      compatible = "snps,dw-apb-uart";
+      reg = <0x80230000 0x100>;
+      clocks = <&baudclk>, <&apb_pclk>;
+      clock-names = "baudclk", "apb_pclk";
+      interrupts = <10>;
+      reg-shift = <2>;
+      reg-io-width = <4>;
+    };
+
+include: [uart-controller.yaml, pinctrl-device.yaml]
+
+compatible: "snps,dw-apb-uart"
+
+properties:
+  reg:
+    required: true
+
+  interrupts:
+    required: true
+
+  clocks:
+    required: true
+
+  dcd-override:
+    description: Override the DCD modem status signal. This signal will
+      always be reported as active instead of being obtained from the modem
+      status register. Define this if your serial port does not use this
+      pin.
+    type: boolean
+
+  dsr-override:
+    description: Override the DTS modem status signal. This signal will
+      always be reported as active instead of being obtained from the modem
+      status register. Define this if your serial port does not use this
+      pin.
+    type: boolean
+
+  cts-override:
+    description: Override the CTS modem status signal. This signal will
+      always be reported as active instead of being obtained from the modem
+      status register. Define this if your serial port does not use this
+      pin.
+    type: boolean
+
+  ri-override:
+    description: Override the RI modem status signal. This signal will always
+      be reported as inactive instead of being obtained from the modem status
+      register. Define this if your serial port does not use this pin.
+    type: boolean

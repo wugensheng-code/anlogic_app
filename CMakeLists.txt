@@ -4,7 +4,7 @@
 # This CMake file is picked by the Zephyr build system because it is defined
 # as the module CMake entry point (see zephyr/module.yml).
 
-
+list(APPEND SOC_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/soc)
 # This is needed so that custom driver classes using system calls are taken into
 # account
 zephyr_syscall_include_directories(include)

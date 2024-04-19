@@ -1,0 +1,15 @@
+# Copyright (c) 2021 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+identifier: dr1m90_ad101_v1011111
+name: Anlogic dr1m90 ad101_v10 cortex a35
+vendor: anlogic
+type: mcu
+arch: arm64
+toolchain:
+  - zephyr
+  - cross-compile
+ram: 256
+flash: 1024
+supported:
+  - uart

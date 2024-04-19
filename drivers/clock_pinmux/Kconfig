@@ -1,0 +1,5 @@
+config PLAT_INIT_PRIORITY
+	int "plat initialization priority"
+	default 2
+	help
+	  Initialization priority for plat

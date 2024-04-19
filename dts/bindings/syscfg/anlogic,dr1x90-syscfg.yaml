@@ -1,0 +1,15 @@
+# Copyright (c) 2021 Teslabs Engineering S.L.
+# SPDX-License-Identifier: Apache-2.0
+
+description: Anlogic dr1x90 System Configuration Registers
+
+compatible: "dr1x90-syscfg"
+
+include: base.yaml
+
+properties:
+  reg:
+    required: true
+
+  clocks:
+    required: true

@@ -1,0 +1,131 @@
+/*
+ * Copyright 2022 Huawei France Technologies SASU
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+/dts-v1/;
+
+#include <arm64/armv8-a.dtsi>
+#include <zephyr/dt-bindings/interrupt-controller/arm-gic.h>
+#include <mem.h>
+#include <freq.h>
+
+/ {
+	#address-cells = <1>;
+	#size-cells = <1>;
+	model = "Anlogic, DR1M90 FPSoc";
+	compatible = "anlogic,dr1m90";
+
+
+	chosen {
+		zephyr,console = &uart1;
+		zephyr,shell-uart = &uart1;
+		zephyr,flash = &ocm;
+		zephyr,sram = &ocm;
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a53";
+			enable-method = "psci";
+			reg = <0>;
+		};
+		cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a53";
+			enable-method = "psci";
+			reg = <1>;
+		 };
+	};
+
+	psci: psci {
+		compatible = "arm,psci-1.0", "arm,psci-0.2", "arm,psci";
+		method = "smc";
+	};
+
+	gic: interrupt-controller@dd000000  {
+		#address-cells = <1>;
+		compatible = "arm,gic-v3", "arm,gic";
+		reg = <0xdd000000 0x20000>, /* GIC Dist */
+			  <0xdd040000 0x40000>;
+		interrupt-controller;
+		#interrupt-cells = <4>;
+		status = "okay";
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupt-parent = <&gic>;
+		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL
+					IRQ_DEFAULT_PRIORITY>,
+					<GIC_PPI 14 IRQ_TYPE_LEVEL
+					IRQ_DEFAULT_PRIORITY>,
+					<GIC_PPI 11 IRQ_TYPE_LEVEL
+					IRQ_DEFAULT_PRIORITY>,
+					<GIC_PPI 10 IRQ_TYPE_LEVEL
+					IRQ_DEFAULT_PRIORITY>;
+	};
+
+	uart_clk: uart_clk {
+		#clock-cells = <0>;
+		compatible = "fixed-clock";
+		clock-frequency = <DT_FREQ_M(50)>;
+	};
+
+	syscfg_clk: syscfg_clk {
+		#clock-cells = <0>;
+		compatible = "fixed-clock";
+		clock-frequency = <DT_FREQ_M(0)>;
+	};
+
+	soc {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+
+		interrupt-parent = <&gic>;
+
+        uart1: serial@f8401000 {
+			compatible = "snps,dw-apb-uart";
+			reg = <0xf8401000 0x1000>, <0xf8800000 0x4000>;
+			interrupt-parent = <&gic>;
+			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL IRQ_DEFAULT_PRIORITY>;
+            clocks = <&uart_clk>;
+			status = "okay";
+		};
+
+
+		syscfg: syscfg@f8800000 {
+			compatible = "dr1x90-syscfg";
+			reg = <0xf8800000 0x4000>;
+			status = "okay";
+			clocks = <&syscfg_clk>;
+		};
+
+	};
+
+    ocm: memory@61000000 {
+        compatible = "zephyr,memory-region";
+        reg = <0x61000000 DT_SIZE_K(256)>;
+        zephyr,memory-region = "OCM";
+    };
+
+	dtcm: memory@60040000 {
+		compatible = "zephyr,memory-region";
+		reg = <0x60040000 DT_SIZE_K(256)>;
+		zephyr,memory-region = "DTCM";
+	};
+
+	/* Instruction TCM RAM (64KB as `TCM_AXI_SHARED` is `000`) */
+	itcm: memory@60000000 {
+		// compatible = "zephyr,memory-region";
+		reg = <0x60000000 DT_SIZE_K(256)>;
+		zephyr,memory-region = "ITCM";
+	};
+
+};

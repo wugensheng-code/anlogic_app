@@ -1,0 +1,8 @@
+family:
+  - name: anlogic_dr1x90
+    series:
+      - name: dr1m90
+        socs:
+          - name: dr1m90
+
+

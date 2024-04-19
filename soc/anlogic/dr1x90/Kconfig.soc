@@ -1,0 +1,13 @@
+#
+# Copyright 2022 Huawei France Technologies SASU
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+config SOC_FAMILY_ANLOGIC_DR1X90
+	bool
+
+config SOC_FAMILY
+	default "anlogic_dr1x90" if SOC_FAMILY_ANLOGIC_DR1X90
+
+rsource "*/Kconfig.soc"

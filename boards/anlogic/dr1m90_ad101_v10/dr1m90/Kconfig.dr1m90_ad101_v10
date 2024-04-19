@@ -1,0 +1,7 @@
+# Copyright (c) 2021 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_DR1M90_AD101_V10
+	bool "Anlogic dr1m90 AD101_V10"
+	select SOC_DR1M90
+
